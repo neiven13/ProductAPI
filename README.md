@@ -25,12 +25,15 @@ Antes de começar você precisará ter instalado em sua máquina o SDK do .NET 6
 Com o pgAdmin abertos será preciso configurar uma senha para o usuário 'postgres'.
 
 1. Na aba lateral esquerda, vá até Login/Group Roles:
+   
 ![](assets/login_group-roles.PNG)
 
 2. Clique com o botão direito no usuário 'postgres' e vá em 'Properties':
+   
 ![](assets/user_postgres.PNG)
 
 3. Com a janela 'Properties" aberta, vá até a guia Definition e, no campo password, digite "postgres@2024":
+
 ![](assets/postgres_password.PNG)
 
 ### Execução
