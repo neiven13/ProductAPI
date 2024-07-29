@@ -60,12 +60,20 @@ Com o pgAdmin abertos será preciso configurar uma senha para o usuário 'postgr
     dotnet watch run
 ```
 ### Extras
-* Foram usados os seguintes princípios SOLID:
-    1. SRP — Single Responsibility Principle:
+* Foram usados os seguintes princípios SOLID: SRP (Single Responsibility Principle) e DIP (Dependency Inversion Principle), ambos com o objetivo de reduzir dependência de código, também facilitar manutenções futuras, atribuindo responsabilidade única nas classes e dependendo de abstrações, não de implementações.
 
-    2. DIP — Dependency Inversion Principle:
+### Pontos de melhoria de performance
+1. Implementação de índices no banco de dados: melhoraria o desempenho das consultas feitas no banco de dados.
 
-### Pontos de melhoria futura
-1. Implementação de índices no banco de dados, ...
-2. Implementação 
+- No PostgresSQL bastaria executar o seguinte comando para criação de índices:
+```sql
+    CREATE INDEX idx_product_name ON Products(Name);
+    CREATE INDEX idx_product_type ON Products(Type);
+```
+
+2. Implementação de acche em memória: melhoraria o tempo de resposta para dados que são lidos com mais frequência e não mudam sempre.
+- Poderia ser implementado usando a interface `IMemoryCache` do pacote `Microsoft.Extensions.Caching.Memory`.
+- Chamamos o método `AddMemoryCache()` na classe `Program.cs`, como um `service`.
+- Por fim, usamos a injeção de dependência na classe `controller` onde será implementado o cache. No método onde se deseja cache, usamos o método `GetOrCreate`, que cria uma entrada na mémoria na primeira vez em que é usado. Na segunda vez em que a operção é executada, esse método verificará se existe uma entrada na memória e a carregará.
+- É possível definir o tempo de expiração do cache usando `AbsoluteExpirationRelativeToNow`, definindo um tempo preciso. 
         
