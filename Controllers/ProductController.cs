@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ProductAPI.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using ProductAPI.Entities;
-using Microsoft.EntityFrameworkCore;
-using ProductAPI.ViewModels;
 using ProductAPI.Entities.Enums;
+using ProductAPI.ViewModels;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 
 namespace ProductAPI.Controllers
 {
@@ -17,23 +13,24 @@ namespace ProductAPI.Controllers
     [Authorize]
     public class ProductController : Controller
     {
-        private readonly ProductContext _context;
-        public ProductController(ProductContext context)
+        private readonly IProductRepository _productRepository;
+
+        public ProductController(IProductRepository productRepository)
         {
-            _context = context;
+            _productRepository = productRepository;
         }
 
         [HttpGet("products")]
         public async Task<IActionResult> GetAllAsync()
         {
-            var products = await _context.Products.AsNoTracking().ToListAsync();
+            var products = await _productRepository.GetAllProductsAsync();
             return Ok(products);
         }
 
         [HttpGet("products/{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var product = await _context.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            var product = await _productRepository.GetProductByIdAsync(id);
             return product == null ? NotFound() : Ok(product);
         }
 
@@ -59,8 +56,7 @@ namespace ProductAPI.Controllers
 
             try
             {
-                await _context.Products.AddAsync(product);
-                await _context.SaveChangesAsync();
+                await _productRepository.AddProductAsync(product);
                 return Created($"v1/products/{product.Id}", product);
             }
             catch (Exception e)
@@ -75,7 +71,7 @@ namespace ProductAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+            var product = await _productRepository.GetProductByIdAsync(id);
 
             if (product == null)
                 return NotFound();
@@ -89,8 +85,7 @@ namespace ProductAPI.Controllers
                 product.Name = modelProduct.Name;
                 product.ProductPrice = modelProduct.Price;
 
-                _context.Products.Update(product);
-                await _context.SaveChangesAsync();
+                await _productRepository.UpdateProductAsync(product);
                 return Ok(product);
             }
             catch (Exception)
@@ -102,25 +97,21 @@ namespace ProductAPI.Controllers
         [HttpDelete("products/{id}")]
         public async Task<IActionResult> DeleteProductAsync(int id)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
-
             try
             {
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
+                await _productRepository.DeleteProductAsync(id);
                 return Ok();
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
-
         }
 
         [HttpGet("products/dashboard")]
         public async Task<IActionResult> GetDashboardResultAsync()
         {
-            var products = await _context.Products.AsNoTracking().ToListAsync();
+            var products = await _productRepository.GetProductsAsync();
 
             var materialProducts = products.Where(p => p.Type == ProductType.Material);
             var servicoProducts = products.Where(p => p.Type == ProductType.Serviço);
@@ -139,8 +130,8 @@ namespace ProductAPI.Controllers
 
             var result = new 
             {
-                    Material = materialInfo,
-                    Serviço = servicoInfo
+                Material = materialInfo,
+                Serviço = servicoInfo
             };
 
             return Ok(result);
