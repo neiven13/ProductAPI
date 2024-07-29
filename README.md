@@ -1,7 +1,7 @@
 # ProductAPI - Teste Técnico
 
 ## Descrição
-Uma API que poderá ser usada por outra aplicação cliente, com rotas definidas para realizar operações de CRUD e com um dashboard, que exibe preço médio e total de produtos para os tipos possível de produtos, definidos pelas regras de negócio.
+Uma API que poderá ser usada por outra aplicação cliente, com rotas definidas para realizar operações de CRUD e com um dashboard, que exibe preço médio e total de produtos para os tipos possíveis de produtos, definidos pelas regras de negócio.
 
 A API também conta com uma implementação de autenticação usando HTTP Basic. Sendo necessário fornecer usuário e senha para realizar as requisições. Para esta API foi definido o seguinte usuário e senha para fins de teste:
 
