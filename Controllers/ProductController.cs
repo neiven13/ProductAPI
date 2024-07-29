@@ -88,9 +88,9 @@ namespace ProductAPI.Controllers
                 await _productRepository.UpdateProductAsync(product);
                 return Ok(product);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(e.Message);
             }
         }
 
