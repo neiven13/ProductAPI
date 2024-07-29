@@ -62,7 +62,7 @@ Com o pgAdmin abertos será preciso configurar uma senha para o usuário 'postgr
 ```bash
     dotnet watch run
 ```
-### Extras
+## Extras
 * Foram usados os seguintes princípios SOLID: SRP (Single Responsibility Principle) e DIP (Dependency Inversion Principle), ambos com o objetivo de reduzir dependência de código, também facilitar manutenções futuras, atribuindo responsabilidade única nas classes e dependendo de abstrações, não de implementações.
 
 ### Pontos de melhoria de performance
