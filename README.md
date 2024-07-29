@@ -74,9 +74,9 @@ Com o pgAdmin abertos será preciso configurar uma senha para o usuário 'postgr
     CREATE INDEX idx_product_type ON Products(Type);
 ```
 
-2. Implementação de acche em memória: melhoraria o tempo de resposta para dados que são lidos com mais frequência e não mudam sempre.
+2. Implementação de cache em memória: melhoraria o tempo de resposta para dados que são lidos com mais frequência e não mudam sempre.
 - Poderia ser implementado usando a interface `IMemoryCache` do pacote `Microsoft.Extensions.Caching.Memory`.
 - Chamamos o método `AddMemoryCache()` na classe `Program.cs`, como um `service`.
-- Por fim, usamos a injeção de dependência na classe `controller` onde será implementado o cache. No método onde se deseja cache, usamos o método `GetOrCreate`, que cria uma entrada na mémoria na primeira vez em que é usado. Na segunda vez em que a operção é executada, esse método verificará se existe uma entrada na memória e a carregará.
+- Por fim, usamos a injeção de dependência na classe `controller` onde será implementado o cache. No método onde se deseja cache, usamos o método `GetOrCreate`, que cria uma entrada na mémoria na primeira vez em que é usado. Na segunda vez em que a operação é executada, esse método verificará se existe uma entrada na memória e a carregará.
 - É possível definir o tempo de expiração do cache usando `AbsoluteExpirationRelativeToNow`, definindo um tempo preciso. 
         
